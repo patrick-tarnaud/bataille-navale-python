@@ -1,29 +1,27 @@
 from random import randint
-from model.Navire import *
+from model.NavireDeGuerre import *
+from model.NavireCivil import *
 from model.Coque import *
 from model.Arme import *
 
 
-def fabriquer():
-    # nom, fabriquant, annee, longueur, puissance_moteur, kilometrage, coque, arme
-    la_fayette = Navire('Frégate La Fayette', 'NavCompany', 2000, 20, 3000, 100000,
-                        Coque(50, 'acier', 'bleu'),
-                        Arme('Canon leger', 50, 100))
+def fabriquer_navires_de_guerre():
+    la_fayette = NavireDeGuerre('Frégate La Fayette', 'NavCompany', 2000, 20, 3000, 100000,
+                                Coque(50, 'acier', 'bleu'),
+                                Arme('Canon leger', 50, 100))
 
-    le_narval = Navire('Porte Avion Le Narval', 'Dassault', 1980, 100, 30000, 500000,
-                       Coque(100, 'titane', 'gris'),
-                       Arme('Canon lourd', 100, 10000))
+    le_narval = NavireDeGuerre('Porte Avion Le Narval', 'Dassault', 1980, 100, 30000, 500000,
+                               Coque(100, 'titane', 'gris'),
+                               Arme('Canon lourd', 100, 10000))
 
-    le_destructeur = Navire('Destroyer Le Destructeur', 'XRay', 2010, 40, 10000, 200000,
-                            Coque(75, 'acier blindé', 'bleu'),
-                            Arme('Canon', 75, 5000))
-    # print(la_fayette)
-    # print(le_narval)
-    # print(le_destructeur)
+    le_destructeur = NavireDeGuerre('Destroyer Le Destructeur', 'XRay', 2010, 40, 10000, 200000,
+                                    Coque(75, 'acier blindé', 'bleu'),
+                                    Arme('Canon', 75, 5000))
+
     return la_fayette, le_narval, le_destructeur
 
 
-def jouer(la_fayette: Navire, le_narval : Navire, le_destructeur: Navire):
+def jouer_navires_de_guerre(la_fayette: NavireDeGuerre, le_narval: Navire, le_destructeur: Navire):
     # tour 1
     la_fayette.naviguer(1000)
     la_fayette.tirer_sur(le_narval)
@@ -59,7 +57,38 @@ def jouer(la_fayette: Navire, le_narval : Navire, le_destructeur: Navire):
     print(le_narval)
     print(le_destructeur)
 
+    print(la_fayette.nom, la_fayette.etat)
+    print(le_narval.nom, le_narval.etat)
+    print(le_destructeur.nom, le_destructeur.etat)
+    print('-------------------------------------------')
+    print('-------------------------------------------')
+
+
+
+def fabriquer_navires_civil():
+    paquebot_lotus = NavireCivil('Paquebot Lotus', 'Jeanneau', 2000, 150, 3000, 5000, Coque(20, 'acier', 'orange'), 0,
+                                 500, ['Malte', 'Iles Canaries'])
+
+    paquebot_tulipe = NavireCivil('Paquebot Tulipe', 'Jeanneau', 1980, 200, 4500, 10000, Coque(50, 'acier', 'rouge'), 0,
+                                  250)
+
+    paquebot_pivoine = NavireCivil('Paquebot Pivoine', 'Robert & Cie', 2019, 200, 4500, 10000,
+                                   Coque(70, 'acier', 'bleu'), 0,
+                                   600)
+    return [paquebot_lotus, paquebot_tulipe, paquebot_pivoine]
+
+
+def jouer_navires_civils(navires_civils: [NavireCivil], nb_tours):
+    for tour in range(nb_tours):
+        for nav in navires_civils:
+            nav.prendre_passagers(randint(0, 20))
+
+    for nav in navires_civils:
+        print(nav)
+
 
 if __name__ == '__main__':
-    navires = fabriquer()
-    jouer(*navires)
+    navires_de_guerre = fabriquer_navires_de_guerre()
+    jouer_navires_de_guerre(*navires_de_guerre)
+    navires_civils = fabriquer_navires_civil()
+    jouer_navires_civils(navires_civils, 5)
