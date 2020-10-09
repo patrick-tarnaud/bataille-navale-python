@@ -21,7 +21,7 @@ def fabriquer_navires_de_guerre():
     return la_fayette, le_narval, le_destructeur
 
 
-def jouer_navires_de_guerre(la_fayette: NavireDeGuerre, le_narval: Navire, le_destructeur: Navire):
+def jouer_navires_de_guerre(la_fayette: NavireDeGuerre, le_narval: NavireDeGuerre, le_destructeur: NavireDeGuerre):
     # tour 1
     la_fayette.naviguer(1000)
     la_fayette.tirer_sur(le_narval)
@@ -63,7 +63,7 @@ def jouer_navires_de_guerre(la_fayette: NavireDeGuerre, le_narval: Navire, le_de
     print('-------------------------------------------')
     print('-------------------------------------------')
 
-
+    le_narval.tirer_sur(le_narval)
 
 def fabriquer_navires_civil():
     paquebot_lotus = NavireCivil('Paquebot Lotus', 'Jeanneau', 2000, 150, 3000, 5000, Coque(20, 'acier', 'orange'), 0,
@@ -81,7 +81,7 @@ def fabriquer_navires_civil():
 def jouer_navires_civils(navires_civils: [NavireCivil], nb_tours):
     for tour in range(nb_tours):
         for nav in navires_civils:
-            nav.prendre_passagers(randint(0, 20))
+            nav.prendre_passagers(randint(0, 5000))
 
     for nav in navires_civils:
         print(nav)

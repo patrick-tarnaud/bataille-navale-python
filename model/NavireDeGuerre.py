@@ -19,6 +19,9 @@ class NavireDeGuerre(Navire):
         self.arme = arme
 
     def tirer_sur(self, cible):
+        if cible == self:
+            print(self.nom, 'tire sur lui-même ! Un navire ne peut tirer sur lui-même !')
+            return
         if self.arme.puissance_tir > 0:
             print(self.nom, 'tire sur', cible.nom)
 
@@ -36,7 +39,11 @@ class NavireDeGuerre(Navire):
             else:
                 print('Le tir a échoué !')
 
-            self.arme.puissance_tir = self.arme.puissance_tir - 1 if self.arme.puissance_tir > 0 else 0
+            if isinstance(cible, NavireDeGuerre):
+                self.arme.puissance_tir = self.arme.puissance_tir - 1 if self.arme.puissance_tir > 0 else 0
+            else:
+                self.arme.puissance_tir = self.arme.puissance_tir - 10 if self.arme.puissance_tir > 10 else 0
+                self.coque.resistance = self.coque.resistance - 10 if self.coque.resistance > 10 else 0
 
             print("""Puissance {tireur} = {puissance_tir}.
     Résistance {cible} = {resistance}.
