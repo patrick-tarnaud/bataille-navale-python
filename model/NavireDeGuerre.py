@@ -1,5 +1,6 @@
 from random import random
 from model.Navire import *
+from errors.BatailleNavaleError import *
 
 
 class NavireDeGuerre(Navire):
@@ -20,8 +21,7 @@ class NavireDeGuerre(Navire):
 
     def tirer_sur(self, cible):
         if cible == self:
-            print(self.nom, 'tire sur lui-même ! Un navire ne peut tirer sur lui-même !')
-            return
+            raise BatailleNavaleError(self, self.nom + ' tire sur lui-même ! Un navire ne peut tirer sur lui-même !')
         if self.arme.puissance_tir > 0:
             print(self.nom, 'tire sur', cible.nom)
 
@@ -51,10 +51,11 @@ class NavireDeGuerre(Navire):
         -------------------------""".format(tireur=self.nom, puissance_tir=self.arme.puissance_tir, cible=cible.nom,
                                             resistance=cible.coque.resistance, points_vie=cible.coque.points_vie))
         else:
-            print(self.nom, 'ne peut plus tirer car il n\'a plus de puissance de tir')
+            raise BatailleNavaleError(self, self.nom + ' ne peut plus tirer car il n\'a plus de puissance de tir')
 
     def __str__(self):
-        return """[ {nom} - {fabriquant} ({annee}) ]
+        return """\
+[ {nom} - {fabriquant} ({annee}) ]
 {longueur} mètres - {puissance_moteur} ch
 {couleur} - {kilometrage} NM
 Puissance de tir : {puissance_tir}

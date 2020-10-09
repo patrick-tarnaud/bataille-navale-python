@@ -1,5 +1,6 @@
 from model.Coque import *
 from model.Arme import *
+from errors.BatailleNavaleError import *
 
 
 class Navire:
@@ -28,7 +29,7 @@ class Navire:
 Kilométrage actuel : {kilometrage} NM.
     -------------------------""".format(nom=self.nom, distance=distance, kilometrage=self.kilometrage))
         else:
-            print(self.nom, 'ne peut plus naviguer car il est détruit')
+            raise BatailleNavaleError(self, self.nom + ' ne peut plus naviguer car il est détruit')
 
     def subir_degats(self, degats):
         if self.etat == 'En marche':
@@ -44,5 +45,5 @@ Kilométrage actuel : {kilometrage} NM.
             if self.etat == 'Détruit':
                 print(self.nom, 'est détruit !')
         else:
-            print(self.nom, 'ne peut plus subir de dégâts car il est déjà détruit')
+            raise BatailleNavaleError(self, self.nom + ' ne peut plus subir de dégâts car il est déjà détruit')
 
