@@ -1,6 +1,7 @@
 from random import random
 from model.Navire import *
 from errors.BatailleNavaleError import *
+from csv import writer
 
 
 class NavireDeGuerre(Navire):
@@ -67,3 +68,27 @@ Etat : {etat}
            puissance_moteur=self.puissance_moteur, couleur=self.coque.couleur,
            kilometrage=self.kilometrage, puissance_tir=self.arme.puissance_tir, resistance=self.coque.resistance,
            points_vie=self.coque.points_vie, etat=self.etat)
+
+    def saveToCSV(self):
+        with open('navire_' + self.nom + '.csv', 'w') as csvfile:
+            wr = writer(csvfile, delimiter=',')
+
+            # header
+            header = list(self.__dict__.keys())
+            header.remove('coque')
+            header.remove('arme')
+            header += list(self.coque.__dict__.keys())
+            header += list(self.arme.__dict__.keys())
+            wr.writerow(header)
+
+            # row with values
+            row = list(self.__dict__.values())
+            row = row[:6]
+            row += list(self.coque.__dict__.values())
+            row += list(self.arme.__dict__.values())
+            wr.writerow(row)
+            # row = list(self.__dict__.values()).append(list(self.coque.__dict__.values()))
+            # print(row)
+            # header.append(self.coque.__dict__.keys())
+
+            # wr.writerow(self.__dict__.values())
