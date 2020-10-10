@@ -63,7 +63,8 @@ def jouer_navires_de_guerre(la_fayette: NavireDeGuerre, le_narval: NavireDeGuerr
     print('-------------------------------------------')
     print('-------------------------------------------')
 
-    le_narval.tirer_sur(le_narval)
+    # le_narval.tirer_sur(le_narval)
+
 
 def fabriquer_navires_civil():
     paquebot_lotus = NavireCivil('Paquebot Lotus', 'Jeanneau', 2000, 150, 3000, 5000, Coque(20, 'acier', 'orange'), 0,
@@ -101,4 +102,8 @@ if __name__ == '__main__':
         print('Exception !')
         print(e)
 
-    navires_de_guerre[0].saveToCSV()
+    navires_de_guerre[0].save_to_cvs()
+    navires_de_guerre[0].save_to_json()
+    nav_from_jsonfile = NavireDeGuerre.load_from_json('navire_Frégate La Fayette.json')
+    print('nav_from_jsonfile\n', nav_from_jsonfile)
+    print(type(nav_from_jsonfile))

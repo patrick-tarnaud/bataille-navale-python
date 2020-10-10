@@ -2,6 +2,7 @@ from random import random
 from model.Navire import *
 from errors.BatailleNavaleError import *
 from csv import writer
+import json
 
 
 class NavireDeGuerre(Navire):
@@ -69,7 +70,7 @@ Etat : {etat}
            kilometrage=self.kilometrage, puissance_tir=self.arme.puissance_tir, resistance=self.coque.resistance,
            points_vie=self.coque.points_vie, etat=self.etat)
 
-    def saveToCSV(self):
+    def save_to_cvs(self):
         with open('navire_' + self.nom + '.csv', 'w') as csvfile:
             wr = writer(csvfile, delimiter=',')
 
@@ -87,8 +88,25 @@ Etat : {etat}
             row += list(self.coque.__dict__.values())
             row += list(self.arme.__dict__.values())
             wr.writerow(row)
-            # row = list(self.__dict__.values()).append(list(self.coque.__dict__.values()))
-            # print(row)
-            # header.append(self.coque.__dict__.keys())
 
-            # wr.writerow(self.__dict__.values())
+    def to_json(self):
+        return json.dumps(self, ensure_ascii=False, default=lambda o: o.__dict__)
+
+    def save_to_json(self):
+        with open('navire_' + self.nom + '.json', 'w') as jsonfile:
+            jsonfile.write(self.to_json())
+
+    @staticmethod
+    def from_json(data):
+        dn = json.loads(data)
+        return NavireDeGuerre(dn['nom'], dn['fabriquant'], dn['annee'], dn['longueur'], dn['puissance_moteur'],
+                              dn['kilometrage'],
+                              Coque(dn['coque']['resistance'], dn['coque']['couleur'], dn['coque']['matiere']),
+                              Arme(dn['arme']['nom'], dn['arme']['puissance_tir'], dn['arme']['prix']))
+
+    @staticmethod
+    def load_from_json(jsonfile_name):
+        with open(jsonfile_name, 'r') as jsonfile:
+            data = jsonfile.read()
+
+        return NavireDeGuerre.from_json(data)
